@@ -159,6 +159,9 @@
     <None Include="..\..\Build\Assets\Shaders\unlit_color.frag" />
     <None Include="..\..\Build\Assets\Shaders\unlit_color.prog" />
     <None Include="..\..\Build\Assets\Shaders\unlit_color.vert" />
+    <None Include="..\..\Build\Assets\Shaders\unlit_textures.frag" />
+    <None Include="..\..\Build\Assets\Shaders\unlit_textures.prog" />
+    <None Include="..\..\Build\Assets\Shaders\unlit_textures.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

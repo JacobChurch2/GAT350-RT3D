@@ -11,16 +11,20 @@ namespace nc
 {
     bool World03::Initialize()
     {
-        m_program = GET_RESOURCE(Program, "Shaders/unlit_color.prog");
+        m_program = GET_RESOURCE(Program, "Shaders/unlit_textures.prog");
         m_program->Use();
+
+        m_texture = GET_RESOURCE(Texture, "Textures/llama.jpg");
+        m_texture->Bind();
+        m_texture->SetActive(GL_TEXTURE0);
 
 #ifdef INTERLEAVE
         //data
         float vertexData[] = {
-           -0.8f, -0.8f, 0.0f, 1.0f, 0.0f, 0.0f,
-           -0.8f,  0.8f, 0.0f, 0.0f, 1.0f, 0.0f,
-            0.8f, -0.8f, 0.0f, 0.0f, 0.0f, 1.0f,
-            0.8f,  0.8f, 0.0f, 1.0f, 1.0f, 1.0f
+           -0.8f, -0.8f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+           -0.8f,  0.8f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            0.8f, -0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+            0.8f,  0.8f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f
         };
 
         //sending data
@@ -32,7 +36,7 @@ namespace nc
         glGenVertexArrays(1, &m_vao);
         glBindVertexArray(m_vao);
 
-        glBindVertexBuffer(0, vbo, 0, 6 * sizeof(GLfloat));
+        glBindVertexBuffer(0, vbo, 0, 8 * sizeof(GLfloat));
 
         //position
         glEnableVertexAttribArray(0);
@@ -43,6 +47,11 @@ namespace nc
         glEnableVertexAttribArray(1);
         glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
         glVertexAttribBinding(1, 0);
+
+        //texcoord
+        glEnableVertexAttribArray(2);
+        glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat));
+        glVertexAttribBinding(2, 0);
 
 #else 
 
@@ -141,7 +150,7 @@ namespace nc
         ImGui::DragFloat3("Scale", &m_transform.scale[0]);
         ImGui::End();
 
-        m_transform.rotation.z += 180 * dt;
+        //m_transform.rotation.z += 180 * dt;
 
         m_transform.position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_A) ? m_speed * -dt : 0;
         m_transform.position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_D) ? m_speed * +dt : 0;
@@ -150,16 +159,15 @@ namespace nc
 
         m_time += dt;
 
-        //model matrix
-        //glm::mat4 position = glm::translate(glm::mat4{ 1 }, m_position);
-       // glm::mat4 rotation = glm::rotate(glm::mat4{ 1 }, glm::radians(m_angle), glm::vec3{ 0, 0, 3 });
-        
-        //glm::mat4 model = position * rotation;
+        //offset and tiling
+        m_program->SetUniform("offset", glm::vec2{ m_time, 0 });
+        m_program->SetUniform("tiling", glm::vec2{ 2, 2 });
 
+        //model matrix
         m_program->SetUniform("model", m_transform.GetMatrix());
 
         //view matrix
-        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 4, 5 }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
+        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
         m_program->SetUniform("view", view);
 
         //projection matrix
@@ -179,9 +187,6 @@ namespace nc
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         ENGINE.GetSystem<Gui>()->Draw();
-
-     /*   glBindVertexArray(m_vao2);
-        glDrawArrays(GL_TRIANGLES, 0, 3);*/
 
         // post-render
         renderer.EndFrame();
