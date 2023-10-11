@@ -148,6 +148,8 @@ namespace nc
         ImGui::DragFloat3("Position", &m_transform.position[0]);
         ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
         ImGui::DragFloat3("Scale", &m_transform.scale[0]);
+        ImGui::DragFloat2("Tiling", &m_tiling[0]);
+        ImGui::DragFloat2("offset", &m_offset[0], 0.0f);
         ImGui::End();
 
         //m_transform.rotation.z += 180 * dt;
@@ -160,8 +162,8 @@ namespace nc
         m_time += dt;
 
         //offset and tiling
-        m_program->SetUniform("offset", glm::vec2{ m_time, 0 });
-        m_program->SetUniform("tiling", glm::vec2{ 2, 2 });
+        m_program->SetUniform("offset", m_offset);
+        m_program->SetUniform("tiling", m_tiling);
 
         //model matrix
         m_program->SetUniform("model", m_transform.GetMatrix());
