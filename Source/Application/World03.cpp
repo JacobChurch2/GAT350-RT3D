@@ -11,12 +11,13 @@ namespace nc
 {
     bool World03::Initialize()
     {
-        m_program = GET_RESOURCE(Program, "Shaders/unlit_textures.prog");
-        m_program->Use();
+        m_material = GET_RESOURCE(Material, "materials/quad.mtrl");
+        //m_program = GET_RESOURCE(Program, "Shaders/unlit_textures.prog");
+        //m_program->Use();
 
-        m_texture = GET_RESOURCE(Texture, "Textures/llama.jpg");
-        m_texture->Bind();
-        m_texture->SetActive(GL_TEXTURE0);
+        //m_texture = GET_RESOURCE(Texture, "Textures/llama.jpg");
+        //m_texture->Bind();
+        //m_texture->SetActive(GL_TEXTURE0);
 
 #ifdef INTERLEAVE
         //data
@@ -28,30 +29,36 @@ namespace nc
         };
 
         //sending data
-        GLuint vbo;
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+        //GLuint vbo;
+        //glGenBuffers(1, &vbo);
+        //glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        //glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
-        glGenVertexArrays(1, &m_vao);
-        glBindVertexArray(m_vao);
+        //glGenVertexArrays(1, &m_vao);
+        //glBindVertexArray(m_vao);
 
-        glBindVertexBuffer(0, vbo, 0, 8 * sizeof(GLfloat));
+        //glBindVertexBuffer(0, vbo, 0, 8 * sizeof(GLfloat));
 
-        //position
-        glEnableVertexAttribArray(0);
-        glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
-        glVertexAttribBinding(0, 0);
+        ////position
+        //glEnableVertexAttribArray(0);
+        //glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
+        //glVertexAttribBinding(0, 0);
 
-        //color
-        glEnableVertexAttribArray(1);
-        glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
-        glVertexAttribBinding(1, 0);
+        ////color
+        //glEnableVertexAttribArray(1);
+        //glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
+        //glVertexAttribBinding(1, 0);
 
-        //texcoord
-        glEnableVertexAttribArray(2);
-        glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat));
-        glVertexAttribBinding(2, 0);
+        ////texcoord
+        //glEnableVertexAttribArray(2);
+        //glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat));
+        //glVertexAttribBinding(2, 0);
+
+        m_vertexBuffer = GET_RESOURCE(VertexBuffer, "vb");
+        m_vertexBuffer->CreateVertexBuffer(sizeof(vertexData), 4, vertexData);
+        m_vertexBuffer->SetAttribute(0, 3, 8 * sizeof(GLfloat), 0);                  // position 
+        m_vertexBuffer->SetAttribute(1, 3, 8 * sizeof(GLfloat), 3 * sizeof(float));  // color 
+        m_vertexBuffer->SetAttribute(2, 2, 8 * sizeof(GLfloat), 6 * sizeof(float));  // texcoord
 
 #else 
 
@@ -148,8 +155,8 @@ namespace nc
         ImGui::DragFloat3("Position", &m_transform.position[0]);
         ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
         ImGui::DragFloat3("Scale", &m_transform.scale[0]);
-        ImGui::DragFloat2("Tiling", &m_tiling[0]);
-        ImGui::DragFloat2("offset", &m_offset[0], 0.0f);
+        //ImGui::DragFloat2("Tiling", &m_tiling[0]);
+        //ImGui::DragFloat2("offset", &m_offset[0], 0.0f);
         ImGui::End();
 
         //m_transform.rotation.z += 180 * dt;
@@ -161,20 +168,22 @@ namespace nc
 
         m_time += dt;
 
+        m_material->ProcessGui();
+        m_material->Bind();
         //offset and tiling
-        m_program->SetUniform("offset", m_offset);
-        m_program->SetUniform("tiling", m_tiling);
+        //m_program->SetUniform("offset", m_offset);
+        //m_program->SetUniform("tiling", m_tiling);
 
         //model matrix
-        m_program->SetUniform("model", m_transform.GetMatrix());
+        m_material->GetProgram()->SetUniform("model", m_transform.GetMatrix());
 
         //view matrix
         glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
-        m_program->SetUniform("view", view);
+        m_material->GetProgram()->SetUniform("view", view);
 
         //projection matrix
         glm::mat4 projection = glm::perspective(glm::radians(70.0f), 800.0f / 600.0f, 0.01f, 100.0f);
-        m_program->SetUniform("projection", projection);
+        m_material->GetProgram()->SetUniform("projection", projection);
 
         ENGINE.GetSystem<Gui>()->EndFrame();
     }
@@ -185,9 +194,7 @@ namespace nc
         renderer.BeginFrame();
 
         // render
-        glBindVertexArray(m_vao);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
+        m_vertexBuffer->Draw(GL_TRIANGLE_STRIP);
         ENGINE.GetSystem<Gui>()->Draw();
 
         // post-render
