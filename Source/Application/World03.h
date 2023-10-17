@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework/World.h"
 #include "Renderer/Renderer.h"
+#include "Core/Math/Transform.h"
 #include <vector>
 
 namespace nc
@@ -23,8 +24,5 @@ namespace nc
 		res_t<Program> m_program;
 		res_t<Material> m_material;
 		res_t<Texture> m_texture;
-
-		glm::vec2 m_tiling{ 1 };
-		glm::vec2 m_offset{ 0 };
 	};
 }
