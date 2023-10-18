@@ -22,5 +22,9 @@ namespace nc
 
 		res_t<Material> m_material;
 		res_t<Model> m_model;
+
+		glm::vec3 m_lightPosition = { 0.0f, 8.0f, 0.0f };
+		glm::vec3 m_lightAmbient = { 0.5f, 0.5f, 0.5f };
+		glm::vec3 m_lightColor = { 1.0f, 1.0f, 1.0f };
 	};
 }
