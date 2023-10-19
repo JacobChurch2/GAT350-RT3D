@@ -15,7 +15,7 @@ namespace nc
 
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
-        m_model->Load("models/buddha.obj");
+        m_model->Load("models/buddha.obj", glm::vec3{ 0 }, glm::vec3{-90,0,0});
 
         return true;
     }
@@ -33,9 +33,12 @@ namespace nc
         ImGui::DragFloat3("Position", &m_transform.position[0], 0.1f);
         ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
         ImGui::DragFloat3("Scale", &m_transform.scale[0], 0.1f);
+        ImGui::End();
+
+        ImGui::Begin("Light");
         ImGui::DragFloat3("Light Position", &m_lightPosition[0]);
-        ImGui::DragFloat3("Ambient Light", &m_lightAmbient[0], 0.01f);
-        ImGui::DragFloat3("Light Color", &m_lightColor[0], 0.1f);
+        ImGui::ColorEdit3("Ambient Color", &m_lightAmbient[0], 0.01f);
+        ImGui::ColorEdit3("Light Color", &m_lightColor[0], 0.1f);
         ImGui::End();
 
         //m_transform.rotation.z += 180 * dt;
@@ -60,12 +63,12 @@ namespace nc
         material->GetProgram()->SetUniform("view", view);
 
         //projection matrix
-        glm::mat4 projection = glm::perspective(glm::radians(70.0f), 800.0f / 600.0f, 0.01f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(70.0f), ENGINE.GetSystem<Renderer>()->GetWidth() / (float) ENGINE.GetSystem<Renderer>()->GetHeight(), 0.01f, 100.0f);
         material->GetProgram()->SetUniform("projection", projection);
 
         //light gui
         material->GetProgram()->SetUniform("light.position", m_lightPosition);
-        material->GetProgram()->SetUniform("light.ambient", m_lightAmbient);
+        material->GetProgram()->SetUniform("ambientLight", m_lightAmbient);
         material->GetProgram()->SetUniform("light.color", m_lightColor);
 
         ENGINE.GetSystem<Gui>()->EndFrame();
