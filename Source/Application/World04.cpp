@@ -15,7 +15,15 @@ namespace nc
 
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
-        m_model->Load("models/cube.obj", glm::vec3{ 0 }, glm::vec3{-90,0,0});
+        m_model->Load("models/plane.obj");
+        //m_model->Load("models/cube.obj", glm::vec3{ 0 }, glm::vec3{-90,0,0});
+        m_transform.position.y = -1;
+
+        m_light.type = light_t::eType::Point;
+        m_light.position = glm::vec3{ 0, 5, 0 };
+        m_light.direction = glm::vec3{ 0, -1 ,0 };
+        m_light.color = glm::vec3{ 1 };
+        m_light.cutoff = 30.0f;
 
         return true;
     }
@@ -36,9 +44,14 @@ namespace nc
         ImGui::End();
 
         ImGui::Begin("Light");
-        ImGui::DragFloat3("Light Position", &m_lightPosition[0]);
+        const char* types[] = {"Point", "Directional", "Spot"};
+        ImGui::Combo("Type", (int*)(&m_light.type), types, 3);
+
+        if (m_light.type != light_t::Directional) ImGui::DragFloat3("Light Position", &m_light.position[0]);
+        if (m_light.type != light_t::Point) ImGui::DragFloat3("Light Direction", &m_light.direction[0]);
+        if (m_light.type == light_t::Spot) ImGui::DragFloat("Cutoff", &m_light.cutoff);
         ImGui::ColorEdit3("Ambient Color", &m_lightAmbient[0], 0.01f);
-        ImGui::ColorEdit3("Light Color", &m_lightColor[0], 0.1f);
+        ImGui::ColorEdit3("Light Color", &m_light.color[0], 0.1f);
         ImGui::End();
 
         //m_transform.rotation.z += 180 * dt;
@@ -67,9 +80,14 @@ namespace nc
         material->GetProgram()->SetUniform("projection", projection);
 
         //light gui
-        material->GetProgram()->SetUniform("light.position", m_lightPosition);
+        material->GetProgram()->SetUniform("light.type", m_light.type);
+        material->GetProgram()->SetUniform("light.position", m_light.position);
+        material->GetProgram()->SetUniform("light.direction", m_light.direction);
+        material->GetProgram()->SetUniform("light.color", m_light.color);
+        material->GetProgram()->SetUniform("light.cutoff", glm::radians(m_light.cutoff));
+
         material->GetProgram()->SetUniform("ambientLight", m_lightAmbient);
-        material->GetProgram()->SetUniform("light.color", m_lightColor);
+
 
         ENGINE.GetSystem<Gui>()->EndFrame();
     }
