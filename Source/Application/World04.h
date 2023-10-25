@@ -19,7 +19,10 @@ namespace nc
 		glm::vec3 position;
 		glm::vec3 direction;
 		glm::vec3 color;
-		float cutoff;
+		float intensity;
+		float range;
+		float innerAngle;
+		float outerAngle;
 	};
 
 	class World04 : public World
@@ -39,7 +42,9 @@ namespace nc
 		res_t<Material> m_material;
 		res_t<Model> m_model;
 
-		light_t m_light;
-		glm::vec3 m_lightAmbient = { 0.5f, 0.5f, 0.5f };
+		//light_t m_light;
+		light_t m_lights[3];
+		int m_selected = 0;
+		glm::vec3 m_lightAmbient = { 0.0f, 0.0f, 0.0f };
 	};
 }

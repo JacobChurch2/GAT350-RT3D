@@ -1,8 +1,8 @@
 #include "World04.h"
 #include "Framework/Framework.h"
 #include "Input/InputSystem.h"
-
 #include <glm/glm/gtc/type_ptr.hpp>
+#include <glm/glm/gtx/color_space.hpp>
 
 #define INTERLEAVE 
 
@@ -11,19 +11,27 @@ namespace nc
 {
     bool World04::Initialize()
     {
-        auto material = GET_RESOURCE(Material, "materials/grid.mtrl");
+        auto material = GET_RESOURCE(Material, "materials/squirrel.mtrl");
 
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
-        m_model->Load("models/plane.obj");
+        m_model->Load("models/squirrel.glb", glm::vec3{ 0, -0.7f, 0 }, glm::vec3{ 0 }, glm::vec3{ 0.4f });
         //m_model->Load("models/cube.obj", glm::vec3{ 0 }, glm::vec3{-90,0,0});
         m_transform.position.y = -1;
 
-        m_light.type = light_t::eType::Point;
-        m_light.position = glm::vec3{ 0, 5, 0 };
-        m_light.direction = glm::vec3{ 0, -1 ,0 };
-        m_light.color = glm::vec3{ 1 };
-        m_light.cutoff = 30.0f;
+        for (int i = 0; i < 3; i++) {
+            m_lights[i].type = light_t::eType::Point;
+            m_lights[i].position = glm::vec3{ randomf(-5,5), randomf(1,8), randomf(-5,5)};
+            m_lights[i].direction = glm::vec3{ 0, -1 ,0 };
+            m_lights[i].color = glm::rgbColor(glm::vec3{ randomf() * 360, 1, 1 });
+            m_lights[i].intensity = 1;
+            m_lights[i].range = 16;
+            m_lights[i].innerAngle = 10.0f;
+            m_lights[i].outerAngle = 30.0f;
+        }
+            /*m_lights[0].color = glm::vec3{ 1, 0, 0 };
+            m_lights[1].color = glm::vec3{ 0, 1, 0 };
+            m_lights[2].color = glm::vec3{ 0, 0, 1 };*/
 
         return true;
     }
@@ -37,22 +45,37 @@ namespace nc
         //GUI!!!!!
         ENGINE.GetSystem<Gui>()->BeginFrame();
 
-        ImGui::Begin("Transform");
-        ImGui::DragFloat3("Position", &m_transform.position[0], 0.1f);
-        ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
-        ImGui::DragFloat3("Scale", &m_transform.scale[0], 0.1f);
+
+        ImGui::Begin("Scene");
+        ImGui::ColorEdit3("Ambient Color", glm::value_ptr(m_lightAmbient));
+        ImGui::Separator();
+
+        for (int i = 0; i < 3; i++)
+        {
+            std::string name = "light" + std::to_string(i);
+            if (ImGui::Selectable(name.c_str(), m_selected == i)) m_selected = i;
+        }
         ImGui::End();
+
 
         ImGui::Begin("Light");
         const char* types[] = {"Point", "Directional", "Spot"};
-        ImGui::Combo("Type", (int*)(&m_light.type), types, 3);
+        ImGui::Combo("Type", (int*)(&m_lights[m_selected].type), types, 3);
 
-        if (m_light.type != light_t::Directional) ImGui::DragFloat3("Light Position", &m_light.position[0]);
-        if (m_light.type != light_t::Point) ImGui::DragFloat3("Light Direction", &m_light.direction[0]);
-        if (m_light.type == light_t::Spot) ImGui::DragFloat("Cutoff", &m_light.cutoff);
-        ImGui::ColorEdit3("Ambient Color", &m_lightAmbient[0], 0.01f);
-        ImGui::ColorEdit3("Light Color", &m_light.color[0], 0.1f);
+        if (m_lights[m_selected].type != light_t::Directional) {
+            ImGui::DragFloat3("Light Position", &m_lights[m_selected].position[0]);
+            ImGui::DragFloat("Range", &m_lights[m_selected].range, 0.1f, 0.1f, 50);
+        }
+        if (m_lights[m_selected].type != light_t::Point) ImGui::DragFloat3("Light Direction", & m_lights[m_selected].direction[0]);
+        if (m_lights[m_selected].type == light_t::Spot) {
+            ImGui::DragFloat("InnerAngle", &m_lights[m_selected].innerAngle, 1, 0, m_lights[m_selected].outerAngle);
+            ImGui::DragFloat("OuterAngle", &m_lights[m_selected].outerAngle, 1, m_lights[m_selected].innerAngle, 90);
+        }
+        //ImGui::ColorEdit3("Ambient Color", &m_lightAmbient[0], 0.01f);
+        ImGui::ColorEdit3("Light Color", &m_lights[m_selected].color[0], 0.1f);
+        ImGui::DragFloat("Intensity", &m_lights[m_selected].intensity, 0.1f, 0, 10);
         ImGui::End();
+
 
         //m_transform.rotation.z += 180 * dt;
 
@@ -72,7 +95,7 @@ namespace nc
         material->GetProgram()->SetUniform("model", m_transform.GetMatrix());
 
         //view matrix
-        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 8 }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
+        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
         material->GetProgram()->SetUniform("view", view);
 
         //projection matrix
@@ -80,14 +103,20 @@ namespace nc
         material->GetProgram()->SetUniform("projection", projection);
 
         //light gui
-        material->GetProgram()->SetUniform("light.type", m_light.type);
-        material->GetProgram()->SetUniform("light.position", m_light.position);
-        material->GetProgram()->SetUniform("light.direction", m_light.direction);
-        material->GetProgram()->SetUniform("light.color", m_light.color);
-        material->GetProgram()->SetUniform("light.cutoff", glm::radians(m_light.cutoff));
+        for (int i = 0; i < 3; i++) {
+            std::string name = "lights[" + std::to_string(i) + "]";
 
-        material->GetProgram()->SetUniform("ambientLight", m_lightAmbient);
+            material->GetProgram()->SetUniform(name + ".type", m_lights[i].type);
+            material->GetProgram()->SetUniform(name + ".position", m_lights[i].position);
+            material->GetProgram()->SetUniform(name + ".direction", glm::normalize(m_lights[1].direction));
+            material->GetProgram()->SetUniform(name + ".color", m_lights[i].color);
+            material->GetProgram()->SetUniform(name + ".intensity", m_lights[i].intensity);
+            material->GetProgram()->SetUniform(name + ".range", m_lights[i].range);
+            material->GetProgram()->SetUniform(name + ".innerAngle", glm::radians(m_lights[i].innerAngle));
+            material->GetProgram()->SetUniform(name + ".outerAngle", glm::radians(m_lights[i].outerAngle));
 
+        }
+            material->GetProgram()->SetUniform("ambientLight", m_lightAmbient);
 
         ENGINE.GetSystem<Gui>()->EndFrame();
     }

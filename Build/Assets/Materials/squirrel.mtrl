@@ -1,18 +1,17 @@
 {
   "program": "shaders/multi_lit_texture.prog",
-  "textures": [ "textures/color_grid.png" ],
-  "color": [
-    1,
+  "textures": [ "textures/squirrel_diffuse.png" ],
+  "diffuse": [
     1,
     1,
     1
   ],
   "specular": [
-    1,
-    1,
-    1
+    0.4,
+    0.4,
+    0.4
   ],
-  "shiness": 60,
+  "shininess": 2,
   "tiling": [ 1, 1 ],
   "offset": [ 0, 0 ]
 }

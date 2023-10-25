@@ -8,6 +8,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{fe5565f5-d093-4bc7-a28f-df4d4795a1e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{d9863840-418a-44d5-a24a-6bb6e614efbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -25,6 +28,9 @@
     <ClCompile Include="World04.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="World05.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World01.h">
@@ -37,6 +43,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="World04.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="World05.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -82,6 +91,24 @@
     </None>
     <None Include="..\..\Build\Assets\Shaders\lit_texture_gouraud.vert">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\multi_lit_texture.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\multi_lit_texture.prog">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\grid.mtrl">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\multi_grid.mtrl">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\quad.mtrl">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\squirrel.mtrl">
+      <Filter>Materials</Filter>
     </None>
   </ItemGroup>
 </Project>
