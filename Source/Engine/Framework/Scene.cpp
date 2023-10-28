@@ -58,6 +58,28 @@ namespace nc
 		}
 
 
+		// get camera component
+		CameraComponent* camera = nullptr;
+		for (auto& actor : m_actors)
+		{
+			if (!actor->active) continue;
+
+			camera = actor->GetComponent<CameraComponent>();
+			if (camera) {
+				break;
+			}
+		}
+
+		// get all shader programs in the resource system
+		//programs = ResourceManager::Instance().GetAllOfType<Program>();
+		// set all shader programs camera and lights uniforms
+		for (auto& program : programs)
+		{
+			program->Use();
+
+			// set camera in shader program
+			if (camera) camera->SetProgram(program);
+		}
 
 		for (auto& actor : m_actors)
 		{
