@@ -96,14 +96,6 @@ namespace nc
         material->ProcessGui();
         material->Bind();
 
-        ////view matrix
-        //glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
-        //material->GetProgram()->SetUniform("view", view);
-
-        ////projection matrix
-        //glm::mat4 projection = glm::perspective(glm::radians(70.0f), ENGINE.GetSystem<Renderer>()->GetWidth() / (float) ENGINE.GetSystem<Renderer>()->GetHeight(), 0.01f, 100.0f);
-        //material->GetProgram()->SetUniform("projection", projection);
-
         material->GetProgram()->SetUniform("ambientLight", m_lightAmbient);
 
         ENGINE.GetSystem<Gui>()->EndFrame();

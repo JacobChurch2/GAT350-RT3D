@@ -22,17 +22,35 @@ namespace nc
 		// get program resource
 		m_program = GET_RESOURCE(Program, program);
 
-		// read the textures name
-		std::vector<std::string> textures;
-		READ_DATA(document, textures);
-		for (auto texture : textures)
-		{
-			// get texture resource
-			m_textures.push_back(GET_RESOURCE(Texture, texture));
+		// read the textures
+		std::string albedoTextureName;
+		READ_NAME_DATA(document, "albedoTexture", albedoTextureName);
+		if (!albedoTextureName.empty()) {
+			albedoTexture = GET_RESOURCE(Texture, albedoTextureName);
 		}
 
-		READ_DATA(document, diffuse);
+		std::string specularTextureName;
+		READ_NAME_DATA(document, "specularTexture", specularTextureName);
+		if (!specularTextureName.empty()) {
+			specularTexture = GET_RESOURCE(Texture, specularTextureName);
+		}
+
+		std::string emissiveTextureName;
+		READ_NAME_DATA(document, "emissiveTexture", emissiveTextureName);
+		if (!emissiveTextureName.empty()) {
+			emissiveTexture = GET_RESOURCE(Texture, emissiveTextureName);
+		}
+
+		std::string normalTextureName;
+		READ_NAME_DATA(document, "normalTexture", normalTextureName);
+		if (!normalTextureName.empty()) {
+			normalTexture = GET_RESOURCE(Texture, normalTextureName);
+		}
+
+
+		READ_DATA(document, albedo);
 		READ_DATA(document, specular);
+		READ_DATA(document, emissive);
 		READ_DATA(document, shininess);
 		READ_DATA(document, tiling);
 		READ_DATA(document, offset);
@@ -44,25 +62,50 @@ namespace nc
 	void Material::Bind()
 	{
 		m_program->Use();
-		m_program->SetUniform("material.diffuse", diffuse);
+		m_program->SetUniform("material.params", params);
+
+		m_program->SetUniform("material.albedo", albedo);
 		m_program->SetUniform("material.specular", specular);
+		m_program->SetUniform("material.emissive", emissive);
 		m_program->SetUniform("material.shininess", shininess);
 		m_program->SetUniform("material.tiling", tiling);
 		m_program->SetUniform("material.offset", offset);
 
-
-		for (size_t i = 0; i < m_textures.size(); i++)
+		if (albedoTexture)
 		{
-			m_textures[i]->SetActive(GL_TEXTURE0 + (int)i);
-			m_textures[i]->Bind();
+			params |= ALBEDO_TEXTURE_MASK;
+			albedoTexture->SetActive(GL_TEXTURE0);
+			albedoTexture->Bind();
+		}
+
+		if (specularTexture)
+		{
+			params |= SPECULAR_TEXTURE_MASK;
+			specularTexture->SetActive(GL_TEXTURE1);
+			specularTexture->Bind();
+		}
+
+		if (normalTexture)
+		{
+			params |= NORMAL_TEXTURE_MASK;
+			normalTexture->SetActive(GL_TEXTURE2);
+			normalTexture->Bind();
+		}
+
+		if (emissiveTexture)
+		{
+			params |= EMISSIVE_TEXTURE_MASK;
+			emissiveTexture->SetActive(GL_TEXTURE3);
+			emissiveTexture->Bind();
 		}
 	}
 	void Material::ProcessGui()
 	{
 		ImGui::Begin("Material");
-		ImGui::ColorEdit3("Diffuse", glm::value_ptr(diffuse));
+		ImGui::ColorEdit3("Albedo", glm::value_ptr(albedo));
 		ImGui::ColorEdit3("Specular", glm::value_ptr(specular));
-		ImGui::DragFloat("Shininess",&shininess, 0.1f, 2.0f, 200.0f);
+		ImGui::ColorEdit3("Emissive", glm::value_ptr(emissive));
+		ImGui::DragFloat("Shininess", &shininess, 0.1f, 2.0f, 200.0f);
 		ImGui::DragFloat2("Tiling", glm::value_ptr(tiling), 0.1f);
 		ImGui::DragFloat2("Offset", glm::value_ptr(offset), 0.1f);
 		ImGui::End();
