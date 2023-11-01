@@ -13,7 +13,7 @@
 				{
 					"type": "ModelComponent",
 					"modelName": "models/cube.obj",
-					"materialName": "materials/skybox.mtrl",
+					"materialName": "materials/skybox2.mtrl",
 					"enableDepth": false,
 					"cullface": "front"
 				}

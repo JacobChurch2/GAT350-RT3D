@@ -155,5 +155,8 @@
     <None Include="..\..\Build\Assets\Shaders\skybox.vert">
       <Filter>Shaders\Cubemap</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Materials\skybox2.mtrl">
+      <Filter>Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>

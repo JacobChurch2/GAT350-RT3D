@@ -170,6 +170,7 @@
     <None Include="..\..\Build\Assets\Materials\quad.mtrl" />
     <None Include="..\..\Build\Assets\Materials\shrek.mtrl" />
     <None Include="..\..\Build\Assets\Materials\skybox.mtrl" />
+    <None Include="..\..\Build\Assets\Materials\skybox2.mtrl" />
     <None Include="..\..\Build\Assets\Materials\squirrel.mtrl" />
     <None Include="..\..\Build\Assets\Scenes\scene.json" />
     <None Include="..\..\Build\Assets\Shaders\cubemap.frag" />
