@@ -22,7 +22,7 @@ namespace nc
 		res_t<Model> model;
 		res_t<Material> material;
 
-		bool enableDepth;
+		bool enableDepth{ true };
 		GLint cullface{ GL_BACK };
 	};
 }
