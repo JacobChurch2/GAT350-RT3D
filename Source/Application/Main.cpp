@@ -3,6 +3,7 @@
 #include "World03.h"
 #include "World04.h"
 #include "World05.h"
+#include "World06.h"
 #include "Core/Core.h"
 #include "Framework/Framework.h"
 #include "Renderer/Renderer.h"
@@ -19,28 +20,8 @@ int main(int argc, char* argv[])
 
 	ENGINE.Initialize();
 
-	auto world = make_unique<nc::World05>();
+	auto world = make_unique<nc::World06>();
 	world->Initialize();
-
-	string test = "The Quick Brown Fox Jumped Over The Lazy Dog 123!@#";
-
-	std::cout << test << std::endl;
-
-	std::cout << nc::StringUtils::ToUpper(test) << std::endl;
-
-	std::cout << nc::StringUtils::ToLower(test) << std::endl;
-
-	if (nc::StringUtils::IsEqualIgnoreCase(test, nc::StringUtils::ToLower(test))) {
-		std::cout << "Equal works" << std::endl;
-	}
-
-	if (!nc::StringUtils::IsEqualIgnoreCase(test, "The Quick Browe Fox Jumped Over The Lazy Dog 123!@#")) {
-		std::cout << "Equal works" << std::endl;
-	}
-
-	std::cout << nc::StringUtils::CreateUnique(test) << endl;
-	std::cout << nc::StringUtils::CreateUnique(test) << endl;
-	std::cout << nc::StringUtils::CreateUnique(test) << endl;
 
 	// main loop
 	bool quit = false;
