@@ -1,6 +1,5 @@
 #include "RotateComponent.h"
 #include "Framework/Actor.h"
-#include "Framework/Engine.h"
 
 namespace nc {
 
