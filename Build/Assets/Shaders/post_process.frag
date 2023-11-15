@@ -46,10 +46,6 @@ vec4 grain(in vec4 color){
 }
 
 vec4 scanline(in vec4 color){
-//	float scanlineIntensity = 0.5; // Adjust the intensity of the scanlines
-//    float scanline = step(0.5 + 0.5 * sin(gl_FragCoord.y * 100.0), random(ftexcoord));
-//    return vec4(color.rgb -= scanline * scanlineIntensity, color.a);
-
 	return (int(gl_FragCoord.y) % 3 != 0 ? vec4(0,0,0,color.a) : (color));
 }
 

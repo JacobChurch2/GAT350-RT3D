@@ -171,6 +171,7 @@
     <None Include="..\..\Build\Assets\Fantasy\Fantasy.mtrl" />
     <None Include="..\..\Build\Assets\Materials\framebuffer.mtrl" />
     <None Include="..\..\Build\Assets\Materials\grid.mtrl" />
+    <None Include="..\..\Build\Assets\Materials\light.mtrl" />
     <None Include="..\..\Build\Assets\Materials\multi_grid.mtrl" />
     <None Include="..\..\Build\Assets\Materials\phong.mtrl" />
     <None Include="..\..\Build\Assets\Materials\postprocess.mtrl" />
