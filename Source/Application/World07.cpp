@@ -16,7 +16,7 @@ namespace nc
         m_scene->Initialize();
 
         auto texture = std::make_shared<Texture>();
-        texture->CreateDepthTexture(256, 256);
+        texture->CreateDepthTexture(1024, 1024);
         ADD_RESOURCE("depth_texture", texture);
 
         auto framebuffer = std::make_shared<Framebuffer>();

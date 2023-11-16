@@ -32,19 +32,25 @@
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ 3, 3, 3 ],
-				"scale": [ 1, 1, 1 ],
-				"rotation": [ 0, 0, 0 ]
+				"position": [ 0, 3, 0 ],
+				"scale": [ 0.1, 0.1, 0.1 ],
+				"rotation": [ 90, 0, 0 ]
 			},
 			"components": [
 				{
 					"type": "LightComponent",
-					"lightType": "point",
+					"lightType": "directional",
 					"color": [ 1, 1, 1 ],
 					"intensity": 1,
 					"range": 20,
 					"innerAngle": 10.0,
-					"outerAngle": 30.0
+					"outerAngle": 30.0,
+					"castShadow": true
+				},
+				{
+					"type": "ModelComponent",
+					"modelName": "models/quad.obj",
+					"materialName": "materials/light.mtrl"
 				}
 			]
 		},
@@ -72,9 +78,31 @@
 		},
 		{
 			"type": "Actor",
-			"name": "postprocess",
+			"name": "Grass",
 			"persistent": true,
 			"active": true,
+			"transform": {
+				"position": [ -5, 0, 5 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Env_Tile_Grass_01.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "postprocess",
+			"persistent": true,
+			"active": false,
 			"prototype": false,
 			"components": [
 				{
