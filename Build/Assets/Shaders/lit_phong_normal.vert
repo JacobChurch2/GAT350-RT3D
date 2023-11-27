@@ -18,7 +18,6 @@ uniform mat4 projection;
 //pass in the shadow matrix
 uniform mat4 shadowVP;
 
-
 uniform struct Material
 {
 	uint params;
@@ -39,6 +38,9 @@ void main()
 	// convert position and normal to world-view space
 	oposition = vec3(modelView * vec4(vposition, 1));
 
+	//calculate the shadow coord
+	oshadowcoord = shadowVP * model * vec4(vposition, 1.0);
+
 	//calculate tbn matrix
 	vec3 normal = normalize(mat3(modelView) * vnormal);
 	vec3 tangent = normalize(mat3(modelView) * vtangent);
@@ -46,8 +48,6 @@ void main()
 
 	otbn = mat3(tangent, bitangent, normal);
 
-	//calculate the shadow coord
-	oshadowcoord = shadowVP * model * vec4(vposition, 1);
 
 
 	mat4 mvp = projection * view * model;

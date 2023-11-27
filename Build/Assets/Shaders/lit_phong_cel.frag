@@ -120,7 +120,7 @@ void main()
 	vec4 emissiveColor = bool(material.params & EMISSIVE_TEXTURE_MASK) ? texture(emissiveTexture, ftexcoord) : vec4(material.emissive, 1);
 
 	// set ambient + emissive color
-	ocolor = vec4(0);//vec4(ambientLight, 1) * albedoColor + emissiveColor;
+	ocolor = vec4(ambientLight, 1) * albedoColor + emissiveColor;
 
 	float shadow = calculateShadow(fshadowcoord, shadowBias);
  

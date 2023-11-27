@@ -50,7 +50,7 @@ namespace nc {
 
 	std::string StringUtils::CreateUnique(const std::string& s)
 	{
-		static uint32_t unique = 0;
+		static uint32_t unique = 1;
 
 		return s + std::to_string(unique++);
 	}

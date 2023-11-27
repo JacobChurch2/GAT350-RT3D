@@ -41,7 +41,7 @@ void main()
 	oviewdir = normalize(-oposition);
 
 
-	oshadowcoord = shadowVP * model * vec4(vposition, 1);
+	oshadowcoord = shadowVP * model * vec4(vposition, 1.0);
 
 	mat4 mvp = projection * modelView;
 	gl_Position = mvp * vec4(vposition, 1.0);
