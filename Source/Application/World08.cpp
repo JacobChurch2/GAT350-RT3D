@@ -16,6 +16,49 @@ namespace nc
         m_scene->Load("Scenes/scene_cel.json");
         m_scene->Initialize();
 
+        for (int i = 0; i < 500; i++) {
+
+            int minx = randomf(10, 20);
+            int maxx = randomf(30, 40);
+            int minz = randomf(10, 15);
+            int maxz = randomf(20, 25);
+            auto actor = CREATE_CLASS(Actor);
+            actor->name = StringUtils::CreateUnique("Mushroom");
+            actor->active = true;
+            actor->transform.position = glm::vec3{ randomf(minx, maxx), 0, -random(minz, maxz) };
+            actor->transform.scale = glm::vec3{ 0.5, 0.5, 0.5 };
+
+            auto model = CREATE_CLASS(ModelComponent);
+            model->modelName = "fantasy/obj/SF_Env_Mushroom_01.obj";
+            model->materialName = "fantasy/fantasy.mtrl";
+
+            actor->AddComponent(std::move(model));
+
+            actor->Initialize();
+            m_scene->Add(std::move(actor));
+        }
+
+        for (int i = 0; i < 200; i++) {
+
+            int minx = randomf(18, 28);
+            int maxx = randomf(30, 40);
+            int maxz = randomf(-5, -1);
+            auto actor = CREATE_CLASS(Actor);
+            actor->name = StringUtils::CreateUnique("Mushroom");
+            actor->active = true;
+            actor->transform.position = glm::vec3{ randomf(minx, maxx), 0, randomf(-10, maxz)};
+            actor->transform.scale = glm::vec3{ 0.5, 0.5, 0.5 };
+
+            auto model = CREATE_CLASS(ModelComponent);
+            model->modelName = "fantasy/obj/SF_Env_Mushroom_01.obj";
+            model->materialName = "fantasy/fantasy.mtrl";
+
+            actor->AddComponent(std::move(model));
+
+            actor->Initialize();
+            m_scene->Add(std::move(actor));
+        }
+
         m_editor = std::make_unique<Editor>();
 
         //create depth texture

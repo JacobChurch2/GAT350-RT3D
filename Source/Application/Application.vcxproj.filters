@@ -131,9 +131,6 @@
     <None Include="..\..\Build\Assets\Materials\quad.mtrl">
       <Filter>Materials</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Materials\squirrel.mtrl">
-      <Filter>Materials</Filter>
-    </None>
     <None Include="..\..\Build\Assets\Scenes\scene.json">
       <Filter>Scenes</Filter>
     </None>
@@ -277,6 +274,9 @@
     </None>
     <None Include="..\..\Build\Assets\Scenes\scene_editor.json">
       <Filter>Scenes</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\spot.mtrl">
+      <Filter>Materials</Filter>
     </None>
   </ItemGroup>
 </Project>

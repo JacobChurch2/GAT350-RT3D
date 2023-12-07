@@ -2,6 +2,25 @@
 	"actors": [
 		{
 			"type": "Actor",
+			"name": "skybox",
+			"persistent": true,
+			"transform": {
+				"position": [ 0, 0, 1 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "models/cube.obj",
+					"materialName": "materials/skybox2.mtrl",
+					"enableDepth": false,
+					"cullface": "front"
+				}
+			]
+		},
+		{
+			"type": "Actor",
 			"name": "camera",
 			"persistent": true,
 			"active": true,
@@ -32,16 +51,72 @@
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ 0, 3, 0 ],
-				"scale": [ 0.1, 0.1, 0.1 ],
-				"rotation": [ 90, 0, 0 ]
+				"position": [ 50, 50, -50 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 45, 45, 0 ]
 			},
 			"components": [
 				{
 					"type": "LightComponent",
 					"lightType": "directional",
 					"color": [ 1, 1, 1 ],
-					"intensity": 1,
+					"intensity": 0.2,
+					"range": 20,
+					"innerAngle": 10.0,
+					"outerAngle": 30.0,
+					"castShadow": true
+				},
+				{
+					"type": "ModelComponent",
+					"modelName": "models/quad.obj",
+					"materialName": "materials/light.mtrl"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "light2",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -3, 3, -38 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 50, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "LightComponent",
+					"lightType": "spot",
+					"color": [ 1, 1, 1 ],
+					"intensity": 0.2,
+					"range": 20,
+					"innerAngle": 10.0,
+					"outerAngle": 30.0,
+					"castShadow": true
+				},
+				{
+					"type": "ModelComponent",
+					"modelName": "models/quad.obj",
+					"materialName": "materials/light.mtrl"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "light3",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -10, 6.4, -58.3 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 94, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "LightComponent",
+					"lightType": "point",
+					"color": [ 1, 1, 1 ],
+					"intensity": 0.2,
 					"range": 20,
 					"innerAngle": 10.0,
 					"outerAngle": 30.0,
@@ -60,8 +135,8 @@
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ -2, 0, 1 ],
-				"scale": [ 0.1, 0.1, 0.1 ],
+				"position": [ -10, 0, -5 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
 				"rotation": [ 0, 0, 0 ]
 			},
 			"components": [
@@ -82,8 +157,8 @@
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ 2, 0, 1 ],
-				"scale": [ 0.1, 0.1, 0.1 ],
+				"position": [ 10, 0, -5 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
 				"rotation": [ 0, 0, 0 ]
 			},
 			"components": [
@@ -104,7 +179,7 @@
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ 0, 1, 2 ],
+				"position": [ -10, 1, -64 ],
 				"scale": [ 0.5, 0.5, 0.5 ],
 				"rotation": [ 0, 0, 0 ]
 			},
@@ -122,12 +197,34 @@
 		},
 		{
 			"type": "Actor",
+			"name": "Mushroom",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 10, 0, -20 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Env_Mushroom_01.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
 			"name": "Grass",
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ -5, 0, 5 ],
-				"scale": [ 1, 1, 1 ],
+				"position": [ -50, 0, 5 ],
+				"scale": [ 10, 10, 10 ],
 				"rotation": [ 0, 0, 0 ]
 			},
 			"components": [
@@ -144,19 +241,309 @@
 		},
 		{
 			"type": "Actor",
-			"name": "depth debug",
+			"name": "House1",
 			"persistent": true,
-			"active": false,
+			"active": true,
 			"transform": {
-				"position": [ 0, 1, 0 ],
-				"scale": [ 1, 1, 1 ],
+				"position": [ -15, -2, -15 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, 73, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_01.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "House2",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 35, -2, -33 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, 73, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_02.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "House3",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -24, -2, -26 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, 25, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_03.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "House4",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -28, -2, -38 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, -23, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_04.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "House5",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -25, -2, -55 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, 48, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_05.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "House6",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -10, -2, -64 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
 				"rotation": [ 0, 0, 0 ]
 			},
 			"components": [
 				{
 					"type": "ModelComponent",
-					"modelName": "models/quad.obj",
-					"materialName": "materials/sprite.mtrl"
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_06.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "House7",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 16, -2, -53 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, -37, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Elven_House_07.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Pond",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -3, 0, -36 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 0, -37, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Env_Waterpool_01.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Tree1",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -21, 0, -19 ],
+				"scale": [ 0.75, 0.75, 0.75 ],
+				"rotation": [ 0, -37, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Env_Tree_Snow_01.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Tree2",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -27.5, 0, -45 ],
+				"scale": [ 0.75, 0.75, 0.75 ],
+				"rotation": [ 0, -37, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Env_Tree_Snow_04.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Tree3",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -27.5, 0, -31 ],
+				"scale": [ 0.75, 0.75, 0.75 ],
+				"rotation": [ 0, -37, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Env_Tree_Snow_06.obj",
+					"materialName": "fantasy/fantasy.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Spot",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -3, 1, -36 ],
+				"scale": [ 0.75, 0.75, 0.75 ],
+				"rotation": [ 0, -37, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "Models/Spot.obj",
+					"materialName": "Materials/spot.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 90, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "ReflectionOgre",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -9.8, 4.5, -2.1 ],
+				"scale": [ 2, 2, 2 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "Models/Ogre.obj",
+					"materialName": "Materials/reflection.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "RefractionOgre",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 10.1, 4.5, -3.8 ],
+				"scale": [ 2, 2, 2 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "Models/Ogre.obj",
+					"materialName": "Materials/refraction.mtrl"
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 0, 0 ]
 				}
 			]
 		}
